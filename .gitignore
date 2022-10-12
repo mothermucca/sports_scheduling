@@ -6,3 +6,7 @@ test.png
 .*history
 .coverage
 *py,cover
+venv
+.idea
+*egg-info
+*.swp
