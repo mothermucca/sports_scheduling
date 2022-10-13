@@ -50,7 +50,7 @@ def test_command_line_options():
     except:
         pass
 
-    output_file = 'test_output.csv'
+    output_file = 'test/data/output_t2_d2.csv'
     process_command_line = ['python','src/sports_schedule_sat.py'
                             ,'-t','2'
                             ,'-d','2'

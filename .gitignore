@@ -10,3 +10,4 @@ venv
 .idea
 *egg-info
 *.swp
+test/data/*

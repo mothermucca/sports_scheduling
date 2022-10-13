@@ -575,7 +575,7 @@ def solution_search_model(model,fixtures,pools,
     # Search and print out all solutions.
     solution_printer = VarArraySolutionPrinter(fixtures,
                                                partial(get_scheduled_fixtures,pools=pools),
-                                               check_file_collision("list_"+csv))
+                                               check_file_collision(csv))
     status = solver.SearchForAllSolutions(model, solution_printer)
     print('Solve status: %s' % solver.StatusName(status))
     print('Statistics')

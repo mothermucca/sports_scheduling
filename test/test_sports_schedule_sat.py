@@ -11,7 +11,7 @@ import filecmp
 def test_various_options():
 
     # now for various combinations of inputs
-    output_file = 'test_output.csv'
+    output_file = 'test/data/output_t8_d4_p4.csv'
 
     # 8 teams, 4 days, 4 pools
     process_command_line = ['python','src/sports_schedule_sat.py'
@@ -75,13 +75,16 @@ def test_various_options():
                             ,'-d','10'
                             ,'-p','5'
                             ,'--debug'
-                            ,'--timelimit','60'
+                            ,'--timelimit','2'
                             ,'--csv',output_file]
     try:
         proc = subprocess.run(process_command_line, encoding='utf8', capture_output=True)
         out = proc.stdout
         err = proc.stderr
         print('out (line 89) is ',out)
+        # Note that this test is fragile. Faster computers will find an optimal solution within the timelimit,
+        # and slower computers won't get started. If you want to mess with it, adjust --timelimit, above,
+        # but good luck getting consistent results.
         assert re.search('FEASIBLE', out, re.MULTILINE)
         assert re.search(r"A better solution than \d+ might be found by adding more time using the --timelimit command line option", out, re.MULTILINE)
     except:
