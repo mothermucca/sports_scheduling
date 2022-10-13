@@ -2,9 +2,6 @@
 import re
 import os
 import subprocess
-import io
-import sys
-from contextlib import contextmanager
 import filecmp
 
 
@@ -26,7 +23,7 @@ def test_various_options():
         print('out is ',out)
         assert re.search('OPTIMAL', out, re.MULTILINE)
         expected_file = 'test/data/output_t8_d4_p4.csv'
-        assert filecmp.cmp(output_file,expected_file) != None
+        assert filecmp.cmp(output_file, expected_file) is not None
     except:
         assert False
     # clean up the temp file
