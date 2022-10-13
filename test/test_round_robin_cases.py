@@ -18,7 +18,6 @@ def test_rr_cases():
                             ,'-t','8'
                             ,'-d','7'
                             ,'-p','2'
-                            ,'--cpu','2'
                             ,'--debug'
                             ,'--timelimit','10'
                             ,'--csv',output_file]
@@ -28,7 +27,6 @@ def test_rr_cases():
         err = proc.stderr
         print('out 186 is ',out)
         assert re.search('OPTIMAL', out, re.MULTILINE)
-        assert re.search('num_search_workers: 2',err,re.MULTILINE)
     except:
         assert False
 
@@ -43,7 +41,6 @@ def test_rr_cases():
                             ,'-t','4'
                             ,'-d','6'
                             ,'-p','1'
-                            ,'--cpu','2'
                             ,'--debug'
                             ,'--timelimit','60'
                             ,'--csv',output_file]
@@ -52,7 +49,6 @@ def test_rr_cases():
         out = proc.stdout
         err = proc.stderr
         assert re.search('OPTIMAL', out, re.MULTILINE)
-        assert re.search('num_search_workers: 2',err,re.MULTILINE)
     except:
         assert False
 

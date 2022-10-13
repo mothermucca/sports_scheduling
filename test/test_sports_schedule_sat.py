@@ -39,7 +39,6 @@ def test_various_options():
                             ,'-d','30'
                             ,'-p','4'
                             ,'--debug'
-                            ,'--cpu','1'
                             ,'--timelimit','1'
                             ,'--csv',output_file]
     try:
@@ -49,7 +48,6 @@ def test_various_options():
         print('out is ',out)
         assert re.search('UNKNOWN', out, re.MULTILINE)
         assert re.search('Add more time using the --timelimit command line option', out, re.MULTILINE)
-        assert re.search('num_search_workers: 1',err,re.MULTILINE)
     except:
         assert False
 
@@ -59,7 +57,6 @@ def test_various_options():
                             ,'-d','23'
                             ,'-p','8'
                             ,'--debug'
-                            ,'--cpu','4'
                             ,'--timelimit','1'
                             ,'--csv',output_file]
     try:
@@ -69,7 +66,6 @@ def test_various_options():
         print('out is ',out)
         assert re.search('UNKNOWN', out, re.MULTILINE)
         assert re.search('Add more time using the --timelimit command line option', out, re.MULTILINE)
-        assert re.search('num_search_workers: 4',err,re.MULTILINE)
     except:
         assert False
 
@@ -78,7 +74,6 @@ def test_various_options():
                             ,'-t','20'
                             ,'-d','10'
                             ,'-p','5'
-                            ,'--cpu','3'
                             ,'--debug'
                             ,'--timelimit','60'
                             ,'--csv',output_file]
@@ -89,7 +84,6 @@ def test_various_options():
         print('out (line 89) is ',out)
         assert re.search('FEASIBLE', out, re.MULTILINE)
         assert re.search(r"A better solution than \d+ might be found by adding more time using the --timelimit command line option", out, re.MULTILINE)
-        assert re.search('num_search_workers: 3',err,re.MULTILINE)
     except:
         assert False
 

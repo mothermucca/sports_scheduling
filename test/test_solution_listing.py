@@ -18,7 +18,6 @@ def test_solution_listing():
                             ,'-t','4'
                             ,'-d','3'
                             ,'-p','1'
-                            ,'--cpu','2'
                             ,'--debug'
                             ,'--timelimit','10'
                             ,'--csv',output_file
@@ -32,7 +31,6 @@ def test_solution_listing():
         assert re.search(r"#144", err, re.MULTILINE)
         assert not re.search(r"#145", err, re.MULTILINE)
         assert re.search('OPTIMAL', err, re.MULTILINE)
-        assert not re.search('num_search_workers: 2',err,re.MULTILINE)
         expected_file = 'test/data/list_output_t4_d3_p1.csv'
         assert filecmp.cmp('list_'+output_file,expected_file) != None
     except:
@@ -49,7 +47,6 @@ def test_solution_listing():
                             ,'-t','4'
                             ,'-d','2'
                             ,'-p','2'
-                            ,'--cpu','2'
                             ,'--debug'
                             ,'--timelimit','10'
                             ,'--csv',output_file
@@ -61,7 +58,6 @@ def test_solution_listing():
         assert re.search('#24', err, re.MULTILINE)
         assert not re.search('#25', err, re.MULTILINE)
         assert re.search('OPTIMAL', err, re.MULTILINE)
-        assert not re.search('num_search_workers: 2',err,re.MULTILINE)
         expected_file = 'test/data/list_output_t4_d2_p2.csv'
         assert filecmp.cmp('list_'+output_file,expected_file) != None
     except:

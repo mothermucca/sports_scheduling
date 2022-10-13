@@ -546,13 +546,11 @@ def model_matches(num_teams,
 
 def solve_model(model,
                 time_limit=None,
-                num_cpus=None,
                 debug=None):
     # run the solver
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = time_limit
     solver.parameters.log_search_progress = debug
-    solver.parameters.num_search_workers = num_cpus
 
     # solution_printer = SolutionPrinter() # since we stop at first
     # solution, this isn't really
@@ -568,15 +566,12 @@ def solve_model(model,
 
 def solution_search_model(model,fixtures,pools,
                           time_limit=None,
-                          num_cpus=None,
                           debug=None,
                           csv=None):
     # run the solver
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = time_limit
     solver.parameters.log_search_progress = debug
-    # cannot search with multiple CPUs
-    # solver.parameters.num_search_workers = num_cpus
     # Search and print out all solutions.
     solution_printer = VarArraySolutionPrinter(fixtures,
                                                partial(get_scheduled_fixtures,pools=pools),
@@ -616,24 +611,6 @@ def report_results(solver,status,fixtures,pools,num_teams,num_matchdays,time_lim
     if csv:
         csv_dump_results(scheduled_games,csv)
 
-def cpu_guess_and_gripe(cpu):
-    ncpu = len(os.sched_getaffinity(0))
-    if not cpu:
-        cpu = min(6,ncpu)
-    print('Setting number of search workers to %i' % cpu)
-
-    if cpu > ncpu:
-        print('You asked for %i workers to be used, but the os only reports %i CPUs available.  This might slow down processing' % (cpu,ncpu))
-
-    if cpu != 6:
-        # don't whinge at user if cpu is set to 6
-        if cpu < ncpu:
-            print('Using %i workers, but there are %i CPUs available.  You might get faster results by using the command line option --cpu %i, but be aware ORTools CP-SAT solver is tuned to 6 CPUs' % (cpu,ncpu,ncpu))
-
-        if cpu > 6:
-            print('Using %i workers.  Be aware ORTools CP-SAT solver is tuned to 6 CPUs' % cpu)
-
-    return cpu
 
 def main():
     """Entry point of the program."""
@@ -656,9 +633,6 @@ def main():
     parser.add_argument('--timelimit', type=int, dest='time_limit', default=60,
                         help='Maximum run time for solver, in seconds.  Default is 60 seconds.')
 
-    parser.add_argument('--cpu',type=int,dest='cpu',
-                        help='Number of workers (CPUs) to use for solver.  Default is 6 or number of CPUs available, whichever is lower')
-
     parser.add_argument('--debug', action='store_true',
                         help="Turn on some print statements.")
 
@@ -674,8 +648,6 @@ def main():
     num_matches_per_day = args.num_matches_per_day
     if not num_matches_per_day:
         num_matches_per_day = args.num_teams // 2
-
-    cpu = cpu_guess_and_gripe(args.cpu)
 
     # set up the model
     (pools,fixtures,breaks,model) = model_matches(args.num_teams,
@@ -700,7 +672,6 @@ def main():
 
         (solver,status) = solve_model(model,
                                       args.time_limit,
-                                      cpu,
                                       args.debug)
         report_results(solver,
                        status,
@@ -713,7 +684,6 @@ def main():
     else:
         (solver,status) = solution_search_model(model,fixtures,pools,
                                                 args.time_limit,
-                                                cpu,
                                                 args.debug,
                                                 args.csv)
 
